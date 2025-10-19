@@ -5,6 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const apiRoutes = require('./routes/api');
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,7 @@ if (process.env.MONGODB_URI) {
     .catch(err => console.error('MongoDB error', err));
 }
 
+app.use('/api', apiRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend', 'build')));
