@@ -1,8 +1,10 @@
+// src/components/NotesPanel.jsx
 import React, { useState } from 'react';
 
 export default function NotesPanel({ notes = [], onSave, onClear }) {
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
+  const list = Array.isArray(notes) ? notes : (notes && Array.isArray(notes.items) ? notes.items : []);
 
   const submit = async (e) => {
     e?.preventDefault();
@@ -27,12 +29,22 @@ export default function NotesPanel({ notes = [], onSave, onClear }) {
       <div style={{marginTop:12}}>
         <h4 className="section-sub">Notes</h4>
         <div id="notesList" className="notes-list">
-          {(!notes || notes.length === 0) ? <div className="muted small">No notes</div> : notes.map(n => (
-            <div className="note-item" key={n._id || n.id}>
-              <div>{n.content}</div>
-              {n.tags && n.tags.length ? <div style={{marginTop:6}}>{n.tags.map(t => <span className="tag" key={t}>{t}</span>)}</div> : null}
-            </div>
-          ))}
+          {list.length === 0 ? (
+            <div className="muted small">No notes</div>
+          ) : list.map(n => {
+            // Use a robust key fallback
+            const key = n._id || n.id || (n.content && n.content.slice(0,20)) || Math.random().toString(36).slice(2,9);
+            return (
+              <div className="note-item" key={key}>
+                <div>{n.content}</div>
+                {n.tags && n.tags.length ? (
+                  <div style={{marginTop:6}}>
+                    {n.tags.map(t => <span className="tag" key={t}>{t}</span>)}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
