@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/youtubedashboard/:path*",
-      "destination": "http://65.2.189.131:7000/api/:path*"
+      "destination": "http://65.2.189.131/youtubedashboard/:path*"
     }
   ]
 }
